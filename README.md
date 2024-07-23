@@ -26,6 +26,8 @@ $ java -jar google-java-format.jar --replace --skip-javadoc-formatting GigaCSV.j
 
 #### Usage
 
+##### Java
+
 ```java
 final GigaCSV csv = new GigaCSV();
 try (final GigaCSV.Writer writer = csv.writer("output.csv")) {
@@ -38,6 +40,19 @@ try (final GigaCSV.Writer writer = csv.writer("output.csv")) {
     }
 } catch (Exception e) {
     // writer exception
+}
+```
+
+##### Kotlin
+
+```kotlin
+val csv = GigaCSV()
+csv.writer("output.csv").use { writer ->
+    csv.reader("input.csv").use { reader ->
+        for (record in reader) {
+            writer.write(record) // write to output.csv file
+        }
+    }
 }
 ```
 
