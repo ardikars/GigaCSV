@@ -19,12 +19,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// package your.package;
+package com.ardikars.gigacsv;
 
 /**
  * GigaCSV is a tools for reading/writing large CSV file efficiently.
  *
- * @see <a href="https://github.com/ardikars/GigaCSV">GigaCSV</a>
+ * <p>
  */
 public final class GigaCSV {
 
@@ -126,7 +126,7 @@ public final class GigaCSV {
   }
 
   /**
-   * Write to CSV file; all field is quoted.
+   * Write to CSV file, all field is quoted.
    *
    * <p>
    *
@@ -172,7 +172,7 @@ public final class GigaCSV {
       this.separator = option.separator;
     }
 
-    public final int write(final java.lang.Iterable<Record> records) throws java.io.IOException {
+    public final int write(final Iterable<Record> records) throws java.io.IOException {
       int written = 0;
       for (final Record record : records) {
         written += write(record);
@@ -191,7 +191,8 @@ public final class GigaCSV {
               records[i].fields[j].getBytes(java.nio.charset.StandardCharsets.UTF_8);
           int startIdx = idx;
           boolean addQuote = false;
-          for (int c = 0; c < bytes.length; c++) {
+          int c = 0;
+          while (c < bytes.length) {
             final byte b = bytes[c];
             if (((b & 0x80) == 0)) {
               if (b == quote) {
@@ -203,6 +204,7 @@ public final class GigaCSV {
                 } else {
                   buffer[idx++] = quote;
                   buffer[idx++] = b;
+                  c += 1;
                   if (!addQuote) {
                     addQuote = true;
                   }
@@ -215,6 +217,7 @@ public final class GigaCSV {
                   break f;
                 } else {
                   buffer[idx++] = b;
+                  c += 1;
                   if (!addQuote && (b == separator || b == LINE_BREAK_CR || b == LINE_BREAK_LF)) {
                     addQuote = true;
                   }
