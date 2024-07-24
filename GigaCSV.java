@@ -19,12 +19,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package com.ardikars.gigacsv;
+package gigacsv;
 
 /**
  * GigaCSV is a tools for reading/writing large CSV file efficiently.
  *
- * <p>
+ * @see <a href="https://github.com/ardikars/GigaCSV">GigaCSV</a>
  */
 public final class GigaCSV {
 

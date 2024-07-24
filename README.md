@@ -16,7 +16,13 @@ Single Java file for `Reading/Writing` large CSV file efficiently.
 #### How to compile
 
 ```bash
-$ javac -d target/classes GigaCSV.java
+$ javac -d target/classes/ GigaCSV.java
+```
+
+#### Build JAR file
+
+```bash
+jar cvfM target/gigacsv.jar target/classes/gigacsv/*.class
 ```
 
 #### Format the code
@@ -60,4 +66,5 @@ csv.writer("output.csv").use { writer ->
 #### Notes:
 
 > * GigaCSV only supports UTF-8 encoding.
+
 > * GigaCSV has not been tested. Don't use it in production.
