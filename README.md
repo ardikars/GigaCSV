@@ -10,6 +10,7 @@ Single Java file for `Reading/Writing` large CSV file efficiently.
 * Supports Unicode characters.
 * Preserves the starting line number (useful for debugging data).
 * Adjustable buffer size.
+* Supports writer quoting strategy.
 * Compliant with the CSV specification (`RFC 4180`)
 
 #### How to compile
@@ -21,7 +22,7 @@ $ javac -d target/classes GigaCSV.java
 #### Format the code
 
 ```bash
-$ java -jar google-java-format.jar --replace --skip-javadoc-formatting GigaCSV.java
+$ java -jar google-java-format-*.jar --replace --skip-javadoc-formatting GigaCSV.java
 ```
 
 #### Usage

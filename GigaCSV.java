@@ -24,7 +24,7 @@
 /**
  * GigaCSV is a tools for reading/writing large CSV file efficiently.
  *
- * <p>
+ * @see <a href="https://github.com/ardikars/GigaCSV">GigaCSV</a>
  */
 public final class GigaCSV {
 
@@ -98,7 +98,7 @@ public final class GigaCSV {
    * @throws java.lang.Exception unable to close file.
    */
   public final Writer writer(final String path) throws java.io.FileNotFoundException {
-    return writerWithMode(path, "rw");
+    return new Writer(path, "rw", false, option);
   }
 
   /**
@@ -122,7 +122,31 @@ public final class GigaCSV {
    */
   public final Writer writerWithMode(final String path, final String mode)
       throws java.io.FileNotFoundException {
-    return new Writer(path, mode, option);
+    return new Writer(path, mode, false, option);
+  }
+
+  /**
+   * Write to CSV file; all field is quoted.
+   *
+   * <p>
+   *
+   * <pre>
+   * try (final GigaCSV.Writer writer = gigaCSV.writer("file.csv", "rw")) {
+   *     writer.write(...);
+   * } catch(Exception e) {
+   *     //
+   * }
+   * </pre>
+   *
+   * @param path file path.
+   * @param mode writing mode.
+   * @return returns {@link Writer}.
+   * @throws java.io.FileNotFoundException file not found.
+   * @throws java.lang.Exception unable to close file.
+   */
+  public final Writer writerWithModeAndAlwaysQuote(final String path, final String mode)
+      throws java.io.FileNotFoundException {
+    return new Writer(path, mode, true, option);
   }
 
   /**
@@ -136,11 +160,14 @@ public final class GigaCSV {
     private final byte[] buffer;
     private final byte quote;
     private final byte separator;
+    private final boolean alwaysQuote;
 
-    private Writer(final String path, final String mode, final Option option)
+    private Writer(
+        final String path, final String mode, final boolean alwaysQuote, final Option option)
         throws java.io.FileNotFoundException {
       this.sequentialAccessFile = new java.io.RandomAccessFile(path, mode);
       this.buffer = new byte[option.bufferSize];
+      this.alwaysQuote = alwaysQuote;
       this.quote = option.quote;
       this.separator = option.separator;
     }
@@ -230,7 +257,7 @@ public final class GigaCSV {
               throw new java.io.UTFDataFormatException("Invalid csv fields");
             }
           }
-          if (addQuote) {
+          if (addQuote || alwaysQuote) {
             if (idx + 2 == buffer.length) {
               written += flush(checkpoint);
               i -= 1;
@@ -617,8 +644,7 @@ public final class GigaCSV {
                     }
                   }
                 }
-              }
-              if (i + 1 == length) {
+              } else if (i + 1 == length) {
                 if (fieldBufIdx + 1 == fieldBufs.length) {
                   fieldBufs[fieldBufIdx] = new FieldBuf(startField, i);
                   fieldSize = fieldBufs.length;
