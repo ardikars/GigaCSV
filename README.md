@@ -22,7 +22,7 @@ $ javac -d target/classes/ GigaCSV.java
 #### Build JAR file
 
 ```bash
-jar cvfM target/gigacsv.jar target/classes/gigacsv/*.class
+cd target/classes/ && jar cvfM ../gigacsv.jar . && cd ../../
 ```
 
 #### Format the code
