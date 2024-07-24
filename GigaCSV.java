@@ -29,7 +29,7 @@ package gigacsv;
 public final class GigaCSV {
 
   private static final boolean PRINT_STACK_TRACE =
-      Boolean.parseBoolean(System.getProperty("gigacsv.stackTrace", "true"));
+      Boolean.parseBoolean(System.getProperty("gigacsv.stack_trace", "true"));
 
   private static final byte LINE_BREAK_CR = '\r';
   private static final byte LINE_BREAK_LF = '\n';
@@ -107,7 +107,7 @@ public final class GigaCSV {
    * <p>
    *
    * <pre>
-   * try (final GigaCSV.Writer writer = gigaCSV.writer("file.csv", "rw")) {
+   * try (final GigaCSV.Writer writer = gigaCSV.writerWithMode("file.csv", "rw")) {
    *     writer.write(...);
    * } catch(Exception e) {
    *     //
@@ -131,7 +131,7 @@ public final class GigaCSV {
    * <p>
    *
    * <pre>
-   * try (final GigaCSV.Writer writer = gigaCSV.writer("file.csv", "rw")) {
+   * try (final GigaCSV.Writer writer = gigaCSV.writerWithModeAndAlwaysQuote("file.csv", "rw")) {
    *     writer.write(...);
    * } catch(Exception e) {
    *     //
