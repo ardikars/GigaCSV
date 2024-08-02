@@ -925,6 +925,18 @@ public final class GigaCSV {
       return new Record(-1, fields, lineBreak);
     }
 
+    /**
+     * Create CSV record with specified line ending and number.
+     *
+     * @param lineBreak line ending.
+     * @param number line number.
+     * @param fields CSV fields.
+     * @return returns CSV {@link Record} with specified line endings.
+     */
+    public static Record create(final LineBreak lineBreak, final long number, String[] fields) {
+      return new Record(number, fields, lineBreak);
+    }
+
     public final long number() {
       return number;
     }

@@ -143,7 +143,7 @@ $ jar cMf target/bundle.jar -C target/deploy/ .
 ```bash
 $ curl --request GET \
   --url https://oss.sonatype.org/service/local/authentication/login \
-  --cookie-jar cookies.txt \
+  --cookie-jar target/cookies.txt \
   --user $USERNAME:$PASSWORD
 ```
 
@@ -152,7 +152,7 @@ $ curl --request GET \
 ```bash
 curl --request POST \
   --url https://oss.sonatype.org/service/local/staging/bundle_upload \
-  --cookie cookies.txt \
+  --cookie target/cookies.txt \
   --header 'Content-Type: multipart/form-data' \
   --form file=@target/bundle.jar
 ```
@@ -162,7 +162,7 @@ curl --request POST \
 ```bash
 $ curl --request POST \
   --url https://oss.sonatype.org/service/local/staging/bulk/promote \
-  --cookie cookies.txt \
+  --cookie target/cookies.txt \
   --header 'Content-Type: application/json' \
   --data '{ 
     "data": {
