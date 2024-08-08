@@ -439,25 +439,11 @@ public final class GigaCSV {
                 offset += record.offset + record.lineBreak.length;
                 this.next = toRecord(record);
                 this.number += 1;
-              } else if (record.status == NextRecord.BUFFER_UNDERFLOW.status) {
-                throw new ArrayIndexOutOfBoundsException("Buffer too small");
-              } else if (record.status == NextRecord.INVALID_CSV_FORMAT.status) {
-                throw new java.io.UTFDataFormatException("Invalid CSV format");
-              } else if (record.status == NextRecord.UNSUPPORTED_ENCODING.status) {
-                throw new java.io.UTFDataFormatException("Invalid CSV file");
-              } else if (record.status == NextRecord.BUFFER_OVERFLOW.status) {
-                throw new ArrayIndexOutOfBoundsException("Buffer overflow");
               } else {
-                throw new Exception("Unknown exception");
+                throwException(record.status);
               }
-            } else if (record.status == NextRecord.INVALID_CSV_FORMAT.status) {
-              throw new java.io.UTFDataFormatException("Invalid CSV format");
-            } else if (record.status == NextRecord.UNSUPPORTED_ENCODING.status) {
-              throw new java.io.UTFDataFormatException("Invalid CSV file");
-            } else if (record.status == NextRecord.BUFFER_OVERFLOW.status) {
-              throw new ArrayIndexOutOfBoundsException("Buffer overflow");
             } else {
-              throw new Exception("Unknown exception");
+              throwException(record.status);
             }
           }
         } else {
@@ -468,9 +454,13 @@ public final class GigaCSV {
           }
           offset = 0;
           final NextRecord record = nextRecord(offset, readLength);
-          offset += record.offset + record.lineBreak.length;
-          this.next = toRecord(record);
-          this.number += 1;
+          if (record.status == 0) {
+            offset += record.offset + record.lineBreak.length;
+            this.next = toRecord(record);
+            this.number += 1;
+          } else {
+            throwException(record.status);
+          }
         }
       } catch (final java.lang.Throwable e) {
         if (PRINT_STACK_TRACE) {
@@ -485,6 +475,20 @@ public final class GigaCSV {
     @Override
     public final void remove() {
       throw new UnsupportedOperationException();
+    }
+
+    private static void throwException(final int status) throws Exception {
+      if (status == NextRecord.INVALID_CSV_FORMAT.status) {
+        throw new java.io.UTFDataFormatException("Invalid CSV format");
+      } else if (status == NextRecord.UNSUPPORTED_ENCODING.status) {
+        throw new java.io.UTFDataFormatException("Invalid CSV file");
+      } else if (status == NextRecord.BUFFER_OVERFLOW.status) {
+        throw new ArrayIndexOutOfBoundsException("Buffer overflow");
+      } else if (status == NextRecord.BUFFER_UNDERFLOW.status) {
+        throw new ArrayIndexOutOfBoundsException("Buffer too small");
+      } else {
+        throw new Exception("Unknown exception");
+      }
     }
 
     private final Record toRecord(final NextRecord record) {
