@@ -13,6 +13,9 @@ Single Java file for `Reading/Writing` large CSV file efficiently.
 * Supports writer quoting strategy.
 * Compliant with the CSV specification (`RFC 4180`)
 
+### Tests
+
+* Test cases in `test` branch.
 
 #### Usage
 
@@ -182,5 +185,3 @@ $ java -jar google-java-format-*.jar --replace --skip-javadoc-formatting GigaCSV
 #### Notes:
 
 > * GigaCSV only supports UTF-8 encoding.
-
-> * GigaCSV has not been tested. Don't use it in production.
